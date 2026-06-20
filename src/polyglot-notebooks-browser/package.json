@@ -36,7 +36,7 @@
     "vscode-uri": "3.0.6"
   },
   "devDependencies": {
-    "@babel/core": "7.23.2",
+    "@babel/core": "7.29.6",
     "@testdeck/mocha": "0.2.0",
     "@types/chai": "4.3.1",
     "@types/chai-as-promised": "7.1.5",
