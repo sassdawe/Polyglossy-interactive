@@ -92,7 +92,7 @@ runs:
       shell: pwsh
       run: ./test-retry-runner.ps1 -buildConfig ${{ inputs.build-config }}
       env:
-        DisableArcade: '1'
+        NUGET_PACKAGES: ${{ github.workspace }}/.packages
         POCKETLOGGER_LOG_PATH: ${{ github.workspace }}/artifacts/TestResults/${{ inputs.build-config }}/pocketlogger.test.log
 
     - name: Report test results
