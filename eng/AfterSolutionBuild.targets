@@ -21,8 +21,8 @@
 
   <!-- Appends the extension `.renamed` to the dotnet-* packages to force the glob `*.nupkg` to not pick it up. -->
   <Target Name="RenameDotNetTryOutputPackage" BeforeTargets="PackageReleasePackages">
-    <Move SourceFiles="%(StableVersionPackages.FullPath)" DestinationFiles="%(StableVersionPackages.FullPath).renamed" />
-    <Move SourceFiles="%(SymbolPackages.FullPath)" DestinationFiles="%(SymbolPackages.FullPath).renamed" />
+    <Move Condition="'@(StableVersionPackages)' != ''" SourceFiles="%(StableVersionPackages.FullPath)" DestinationFiles="%(StableVersionPackages.FullPath).renamed" />
+    <Move Condition="'@(SymbolPackages)' != ''" SourceFiles="%(SymbolPackages.FullPath)" DestinationFiles="%(SymbolPackages.FullPath).renamed" />
     <PropertyGroup>
       <OldPreReleaseVersionLabel>$(PreReleaseVersionLabel)</OldPreReleaseVersionLabel>
       <PreReleaseVersionLabel>beta</PreReleaseVersionLabel>
@@ -31,8 +31,8 @@
 
   <!-- Removes the `.renamed` extension from the dotnet-* packages. -->
   <Target Name="RestoreDotNetTryOutputPackage" AfterTargets="PackageReleasePackages">
-    <Move SourceFiles="%(StableVersionPackages.FullPath).renamed" DestinationFiles="%(StableVersionPackages.FullPath)" />
-    <Move SourceFiles="%(SymbolPackages.FullPath).renamed" DestinationFiles="%(SymbolPackages.FullPath)" />
+    <Move Condition="'@(StableVersionPackages)' != ''" SourceFiles="%(StableVersionPackages.FullPath).renamed" DestinationFiles="%(StableVersionPackages.FullPath)" />
+    <Move Condition="'@(SymbolPackages)' != ''" SourceFiles="%(SymbolPackages.FullPath).renamed" DestinationFiles="%(SymbolPackages.FullPath)" />
     <PropertyGroup>
       <PreReleaseVersionLabel>$(OldPreReleaseVersionLabel)</PreReleaseVersionLabel>
     </PropertyGroup>
