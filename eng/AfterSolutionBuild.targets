@@ -50,11 +50,11 @@
       <PackageTempPath>$([System.IO.Path]::GetTempPath())/$([System.Guid]::NewGuid())</PackageTempPath>
     </PropertyGroup>
 
-    <MakeDir Directories="$(PackageTempPath)" />
-    <Unzip SourceFiles="%(SymbolPackageWithBadFiles.Identity)" DestinationFolder="$(PackageTempPath)" />
-    <Delete Files="$(PackageTempPath)\%(SymbolPackageFilesToStrip.Identity)" />
-    <ZipDirectory SourceDirectory="$(PackageTempPath)" DestinationFile="%(SymbolPackageWithBadFiles.Identity)" Overwrite="true" />
-    <RemoveDir Directories="$(PackageTempPath)" />
+    <MakeDir Condition="'@(SymbolPackageWithBadFiles)' != ''" Directories="$(PackageTempPath)" />
+    <Unzip Condition="'@(SymbolPackageWithBadFiles)' != ''" SourceFiles="%(SymbolPackageWithBadFiles.Identity)" DestinationFolder="$(PackageTempPath)" />
+    <Delete Condition="'@(SymbolPackageWithBadFiles)' != ''" Files="$(PackageTempPath)\%(SymbolPackageFilesToStrip.Identity)" />
+    <ZipDirectory Condition="'@(SymbolPackageWithBadFiles)' != ''" SourceDirectory="$(PackageTempPath)" DestinationFile="%(SymbolPackageWithBadFiles.Identity)" Overwrite="true" />
+    <RemoveDir Condition="'@(SymbolPackageWithBadFiles)' != ''" Directories="$(PackageTempPath)" />
   </Target>
 
 </Project>
