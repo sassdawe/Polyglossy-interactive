@@ -79,6 +79,11 @@ public class KernelCommandAndEventReceiver : IKernelCommandAndEventReceiver, IDi
         _observable = messages
             .Select(s =>
             {
+                if (!LooksLikeJsonEnvelope(s))
+                {
+                    return null;
+                }
+
                 try
                 {
                     return Serializer.DeserializeCommandOrEvent(s);
@@ -89,7 +94,19 @@ public class KernelCommandAndEventReceiver : IKernelCommandAndEventReceiver, IDi
 
                     return new CommandOrEvent(new ErrorProduced(exception.Message, KernelCommand.None), isParseError: true);
                 }
-            });
+            })
+            .Where(coe => coe is not null);
+
+    private static bool LooksLikeJsonEnvelope(string message)
+    {
+        if (string.IsNullOrWhiteSpace(message))
+        {
+            return false;
+        }
+
+        var trimmed = message.TrimStart();
+        return trimmed.Length > 0 && trimmed[0] == '{';
+    }
 
     private void ReaderLoop()
     {

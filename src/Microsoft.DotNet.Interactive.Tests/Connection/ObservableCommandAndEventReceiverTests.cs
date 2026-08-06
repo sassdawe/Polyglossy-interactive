@@ -181,4 +181,23 @@ public class ObservableCommandAndEventReceiverTests : IDisposable
 
         count.Should().Be(countAfterDispose);
     }
+
+    [Fact]
+    public async Task FromObservable_ignores_non_json_lines()
+    {
+        var submitCode = new SubmitCode("123");
+        var message = KernelCommandEnvelope.Serialize(submitCode);
+
+        using var receiver = KernelCommandAndEventReceiver.FromObservable(
+            new[]
+            {
+                "info : warming up",
+                message
+            }.ToObservable());
+
+        var commandOrEvent = await receiver.FirstAsync();
+
+        commandOrEvent.IsParseError.Should().BeFalse();
+        commandOrEvent.Command.As<SubmitCode>().Code.Should().Be(submitCode.Code);
+    }
 }
