@@ -124,6 +124,9 @@
     <TypescriptOutputFiles Include="$(JsApiRoot)dist/dotnet-interactive.js" Condition="Exists('$(JsApiRoot)dist/dotnet-interactive.js')" />
 
     <EmbeddedResource Include="@(TypescriptOutputFiles)" LogicalName="$(AssemblyName).resources.%(FileName)%(Extension)" />
+    <EmbeddedResource Update="$(JsApiRoot)dist/polyglossy-interactive.js"
+              LogicalName="$(AssemblyName).resources.dotnet-interactive.js"
+              Condition="!Exists('$(JsApiRoot)dist/dotnet-interactive.js')" />
 
     <EmbeddedResource Include="resources\logo-456x456.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
